@@ -7,9 +7,12 @@ import de.workshops.bookshelf.domain.BookTestData;
 import de.workshops.bookshelf.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,6 +20,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -65,5 +69,14 @@ class BookRestControllerMockMvcTest {
         });
         assertThat(books).hasSameSizeAs(knownBooks);
         assertThat(books.get(1).getTitle()).isEqualTo(knownBooks.get(1).getTitle());
+    }
+
+    @TestConfiguration
+    static class BookRestControllerMockMvcTestConfiguration {
+
+        @Bean
+        public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+            return builder -> builder.featuresToEnable(INDENT_OUTPUT);
+        }
     }
 }

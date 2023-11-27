@@ -1,0 +1,9 @@
+application:
+  title: @project.name@
+  version: @project.version@
+
+bookshelf:
+  owner: Someone
+  isbn-lookup:
+    url: https://example.org/isbn
+    api-key: secret

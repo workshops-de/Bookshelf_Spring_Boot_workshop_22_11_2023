@@ -1,0 +1,46 @@
+openapi: '3.0.0'
+info:
+  title: Author API
+  version: 1.0.0
+
+paths:
+  /author:
+    get:
+      summary: Gets all authors
+      responses:
+        default:
+          description: Array of authors
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/authorsResponse'
+  /author/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Gets an author
+      responses:
+        default:
+          description: The author
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/authorResponse'
+
+components:
+  schemas:
+    authorsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/authorResponse'
+    authorResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

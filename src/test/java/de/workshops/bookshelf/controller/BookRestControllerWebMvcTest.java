@@ -1,5 +1,6 @@
 package de.workshops.bookshelf.controller;
 
+import de.workshops.bookshelf.config.BookshelfProperties;
 import de.workshops.bookshelf.domain.Book;
 import de.workshops.bookshelf.domain.BookTestData;
 import de.workshops.bookshelf.service.BookService;
@@ -28,6 +29,9 @@ class BookRestControllerWebMvcTest {
 
     @MockBean
     BookService bookService;
+
+    @MockBean
+    BookshelfProperties bookshelfProperties;
 
     List<Book> knownBooks = BookTestData.knownBooks();
 

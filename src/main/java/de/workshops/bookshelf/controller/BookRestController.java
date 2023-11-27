@@ -1,5 +1,6 @@
 package de.workshops.bookshelf.controller;
 
+import de.workshops.bookshelf.config.BookshelfProperties;
 import de.workshops.bookshelf.domain.Book;
 import de.workshops.bookshelf.domain.BookNotFoundException;
 import de.workshops.bookshelf.service.BookService;
@@ -30,8 +31,11 @@ public class BookRestController {
 
     private final BookService service;
 
-    public BookRestController(BookService service) {
+    private final BookshelfProperties properties;
+
+    public BookRestController(BookService service, BookshelfProperties properties) {
         this.service = service;
+        this.properties = properties;
     }
 
     @GetMapping
@@ -61,6 +65,13 @@ public class BookRestController {
     @PostMapping("/search")
     public List<Book> searchBooks(@RequestBody @Valid BookSearchRequest searchRequest) {
         return service.findBooksByIsbnAndAuthor(searchRequest.getIsbn(), searchRequest.getAuthor());
+    }
+
+    @GetMapping("/{isbn}/lookup")
+    public String lookupIsbn(@PathVariable String isbn) {
+        return String.format("%s does lookup for '%s' via %s with key '%s'",
+                properties.getOwner(), isbn, properties.getIsbnLookup().getUrl(), properties.getIsbnLookup().getApiKey()
+        );
     }
 
     @ExceptionHandler(BookNotFoundException.class)

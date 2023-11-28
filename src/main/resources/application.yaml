@@ -7,3 +7,16 @@ bookshelf:
   isbn-lookup:
     url: https://example.org/isbn
     api-key: secret
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 1
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  sql:
+    init:
+      mode: always

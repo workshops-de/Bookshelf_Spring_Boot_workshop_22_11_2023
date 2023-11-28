@@ -17,31 +17,19 @@ public class BookService {
     }
 
     public List<Book> getAllBooks() {
-        return repository.getAllBooks();
+        return repository.findAll();
     }
 
     public Book getBookByIsbn(String isbn) throws BookNotFoundException {
-        return repository.getAllBooks().stream()
-                .filter(book -> hasIsbn(book, isbn)).findFirst()
+        return repository.findBookByIsbn(isbn)
                 .orElseThrow(() -> new BookNotFoundException("ISBN: " + isbn));
     }
 
     public List<Book> findBooksByAuthor(String author) {
-        return repository.getAllBooks().stream().filter(book -> hasAuthor(book, author)).toList();
+        return repository.findBooksByAuthorContains(author);
     }
 
     public List<Book> findBooksByIsbnAndAuthor(String isbn, String author) {
-        return repository.getAllBooks().stream()
-                .filter(book -> isbn == null || hasIsbn(book, isbn))
-                .filter(book -> author == null || hasAuthor(book, author))
-                .toList();
-    }
-
-    private boolean hasIsbn(Book book, String isbn) {
-        return book.getIsbn().equals(isbn);
-    }
-
-    private boolean hasAuthor(Book book, String author) {
-        return book.getAuthor().contains(author);
+        return repository.findBooksByIsbnAndAuthor(isbn, author);
     }
 }
